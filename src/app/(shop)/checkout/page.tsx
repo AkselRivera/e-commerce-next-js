@@ -78,7 +78,7 @@ export default function CheckoutPage() {
             <div className="mt-5 mb-2 w-full">
               <p className="mb-5">
                 <span className="text-sm">
-                  Al hacer clic en "Confirmar orden", aceptas los{" "}
+                  Al hacer clic en &quot;Confirmar orden&ldquo;, aceptas los{" "}
                   <a href="#" className="underline underline-offset-2">
                     {" "}
                     términos y condiciones
