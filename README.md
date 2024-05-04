@@ -17,3 +17,8 @@ Esta es un sistema web para gestionar un e-commerce
 Para crear una migracion es necesario usar `npx prisma migrate dev --name NombreMNigracion`
 
 ## Ejecutar aplicación en Producción
+
+### Utils:
+
+Open graph preview:
+`https://www.opengraph.xyz/`

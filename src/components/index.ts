@@ -12,3 +12,4 @@ export * from "./product/slideshow/ProductMobileSlideShow";
 
 export * from "./ui/footer/Footer";
 export * from "./ui/pagination/Pagination";
+export * from "./product/stocklabel/StockLabel";
