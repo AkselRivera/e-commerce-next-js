@@ -13,3 +13,7 @@ export * from "./product/slideshow/ProductMobileSlideShow";
 export * from "./ui/footer/Footer";
 export * from "./ui/pagination/Pagination";
 export * from "./product/stocklabel/StockLabel";
+export * from "./product/add-to-cart/AddToCart";
+
+export * from "./cart/ProductsInCart";
+export * from "./cart/OrderSummary";

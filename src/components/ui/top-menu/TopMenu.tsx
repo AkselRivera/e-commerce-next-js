@@ -1,68 +1,82 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { titleFont } from "@/config/fonts";
-import { useUIStore } from "@/store";
+import { useCartStore, useUIStore } from "@/store";
 import Link from "next/link";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 
 export const TopMenu = () => {
-  const opensideMenu = useUIStore((state) => state.openSideMenu);
-  return (
-    <nav className="flex px-5 justify-between items-center w-full">
-      {/*  Logo*/}
-      <div>
-        <Link href="/">
-          <span className={`${titleFont.className} antialiased font-bold`}>
-            Shop
-          </span>
-          <span> | Shop</span>
-        </Link>
-      </div>
+	const opensideMenu = useUIStore((state) => state.openSideMenu);
+	const totalItems = useCartStore((state) => state.getTotalItems());
 
-      {/* Center Menu */}
+	const [isLoaded, setIsLoaded] = useState(false);
 
-      <div className="hidden sm:block">
-        <Link
-          className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
-          href="/gender/men"
-        >
-          Hombres
-        </Link>
-        <Link
-          className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
-          href="/gender/women"
-        >
-          Mujeres
-        </Link>
-        <Link
-          className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
-          href="/gender/kid"
-        >
-          Niños
-        </Link>
-      </div>
+	useEffect(() => {
+		setIsLoaded(true);
+	}, []);
 
-      {/*  Search. Cart, menu*/}
+	return (
+		<nav className="flex px-5 justify-between items-center w-full">
+			{/*  Logo*/}
+			<div>
+				<Link href="/">
+					<span className={`${titleFont.className} antialiased font-bold`}>
+						Shop
+					</span>
+					<span> | Shop</span>
+				</Link>
+			</div>
 
-      <div className="flex items-center">
-        <Link href="/search" className="mx-2">
-          <IoSearchOutline className="w-5 h-5" />
-        </Link>
-        <Link href="/cart" className="mx-2">
-          <div className="relative">
-            <span className="absolute text-xs rounded-full px-1 font-bold -top-2 -right-2 bg-blue-700 text-white">
-              2
-            </span>
-            <IoCartOutline className="w-5 h-5" />
-          </div>
-        </Link>
-        <button
-          className="mr-2 p-2 rounded-md transition-all hover:bg-gray-100"
-          onClick={opensideMenu}
-        >
-          Menu
-        </button>
-      </div>
-    </nav>
-  );
+			{/* Center Menu */}
+
+			<div className="hidden sm:block">
+				<Link
+					className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
+					href="/gender/men"
+				>
+					Hombres
+				</Link>
+				<Link
+					className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
+					href="/gender/women"
+				>
+					Mujeres
+				</Link>
+				<Link
+					className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
+					href="/gender/kid"
+				>
+					Niños
+				</Link>
+			</div>
+
+			{/*  Search. Cart, menu*/}
+
+			<div className="flex items-center">
+				<Link href="/search" className="mx-2">
+					<IoSearchOutline className="w-5 h-5" />
+				</Link>
+				<Link
+					href={totalItems > 0 && isLoaded ? "/cart" : "/empty"}
+					className="mx-2"
+				>
+					<div className="relative">
+						{totalItems > 0 && isLoaded && (
+							<span className="absolute text-xs rounded-full px-1 font-bold -top-2 -right-2 fade-in bg-blue-700 text-white">
+								{totalItems}
+							</span>
+						)}
+						<IoCartOutline className="w-5 h-5" />
+					</div>
+				</Link>
+				<button
+					className="mr-2 p-2 rounded-md transition-all hover:bg-gray-100"
+					onClick={opensideMenu}
+				>
+					Menu
+				</button>
+			</div>
+		</nav>
+	);
 };
