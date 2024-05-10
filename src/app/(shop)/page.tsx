@@ -5,23 +5,23 @@ import { Pagination, ProductGrid, Title } from "@/components";
 import { redirect } from "next/navigation";
 
 interface Props {
-  searchParams: {
-    page?: string;
-  };
+	searchParams: {
+		page?: string;
+	};
 }
 
 export default async function Home({ searchParams }: Props) {
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const { products, total } = await getPaginatedProductsWithImages({ page });
+	const page = searchParams.page ? parseInt(searchParams.page) : 1;
+	const { products, total } = await getPaginatedProductsWithImages({ page });
 
-  if (products.length === 0) redirect("/");
+	if (products.length === 0) redirect("/");
 
-  return (
-    <>
-      <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
+	return (
+		<>
+			<Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
 
-      <ProductGrid products={products} />
-      <Pagination total={total} />
-    </>
-  );
+			<ProductGrid products={products} />
+			<Pagination total={total} />
+		</>
+	);
 }

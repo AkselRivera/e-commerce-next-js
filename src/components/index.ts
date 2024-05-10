@@ -17,3 +17,8 @@ export * from "./product/add-to-cart/AddToCart";
 
 export * from "./cart/ProductsInCart";
 export * from "./cart/OrderSummary";
+
+export * from "./login/ui/LoginForm";
+export * from "./new-account/ui/NewAccountForm";
+
+export * from "./provider/AuthProvider";
