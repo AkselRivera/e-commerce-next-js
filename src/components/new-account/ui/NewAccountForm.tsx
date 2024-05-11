@@ -25,6 +25,7 @@ export const NewAccountForm = () => {
 
 		if (!resp.ok) {
 			setErrorMessage(resp?.message || "Error al registrar usuario");
+			return;
 		}
 
 		await loginUser(email.toLowerCase(), password);

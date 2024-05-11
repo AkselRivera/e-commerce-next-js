@@ -7,6 +7,7 @@ import { z } from "zod";
 import prisma from "./lib/prisma";
 
 const protectedRoutes = ["/profile", "/orders", "/checkout"];
+// const authRoutes = ["/auth/login", "/auth/new-account"];
 
 export const authConfig: NextAuthConfig = {
 	pages: {
@@ -16,15 +17,23 @@ export const authConfig: NextAuthConfig = {
 
 	callbacks: {
 		authorized({ auth, request: { nextUrl } }) {
-			console.log(auth);
 			const isLoggedIn = !!auth?.user;
 			const isProtected = protectedRoutes.includes(nextUrl.pathname);
 			if (isProtected) {
-				if (isLoggedIn) return true;
+				if (isLoggedIn) {
+					console.log("Protected and logged in");
+
+					return true;
+				}
+				console.log("Protected but not logged in");
 				return false; // Redirect unauthenticated users to login page
 			} else if (isLoggedIn) {
-				return Response.redirect(new URL("/", nextUrl));
+				console.log("logged in");
+				// return Response.redirect(new URL("/", nextUrl));
+				return true;
 			}
+
+			console.log("Default");
 			return true;
 		},
 

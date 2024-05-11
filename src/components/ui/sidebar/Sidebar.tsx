@@ -5,6 +5,7 @@ import { useUIStore } from "@/store";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import {
 	IoCloseOutline,
@@ -18,16 +19,17 @@ import {
 } from "react-icons/io5";
 
 export const Sidebar = () => {
+	const router = useRouter();
 	const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
 	const closeMenu = useUIStore((state) => state.closeSideMenu);
 
-	const { data: session } = useSession();
+	const { data: session, status, update } = useSession();
 	const isAuthenticated = !!session?.user;
 
-	const handleLogout = () => {
-		// window.location.replace("/");
-		// closeMenu();
-		logout();
+	const handleLogout = async () => {
+		await logout();
+		closeMenu();
+		window.location.replace("/");
 	};
 
 	return (
