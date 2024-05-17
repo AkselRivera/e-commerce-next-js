@@ -14,7 +14,7 @@ Esta es un sistema web para gestionar un e-commerce
 
 ## Nota:
 
-Para crear una migracion es necesario usar `npx prisma migrate dev --name NombreMNigracion`
+Para crear una migracion es necesario usar `npx prisma migrate dev --name NombreMNigracion` o `npx prisma migrate dev -n NombreMNigracion`
 
 ## Ejecutar aplicación en Producción
 

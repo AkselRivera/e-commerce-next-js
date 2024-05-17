@@ -22,3 +22,5 @@ export * from "./login/ui/LoginForm";
 export * from "./new-account/ui/NewAccountForm";
 
 export * from "./provider/AuthProvider";
+
+export * from "./checkout/address/AddressForm";

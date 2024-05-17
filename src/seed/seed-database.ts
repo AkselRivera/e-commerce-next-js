@@ -1,55 +1,61 @@
 import { initialData } from "./seed";
 
 import prisma from "../lib/prisma";
+import { countries } from "./seed-countries";
 
 async function main() {
-  console.log("Seeding database...\n\n");
+	console.log("Seeding database...\n\n");
 
-  //  1. Borrar todos los registros
-  // await Promise.all([
-  await prisma.user.deleteMany();
-  await prisma.productImage.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.category.deleteMany();
-  // ]);
+	//  1. Borrar todos los registros
+	// await Promise.all([
+	await prisma.country.deleteMany();
+	await prisma.user.deleteMany();
+	await prisma.productImage.deleteMany();
+	await prisma.product.deleteMany();
+	await prisma.category.deleteMany();
+	// ]);
 
-  await prisma.user.createMany({
-    data: initialData.users 
-  });
+	await prisma.country.createMany({
+		data: countries,
+	});
 
-  const { categories, products } = initialData;
-  const categoriesData = categories.map((category) => ({ name: category }));
+	await prisma.user.createMany({
+		data: initialData.users,
+	});
 
-  await prisma.category.createMany({ data: categoriesData });
+	const { categories, products } = initialData;
+	const categoriesData = categories.map((category) => ({ name: category }));
 
-  const categoriesDB = await prisma.category.findMany();
+	await prisma.category.createMany({ data: categoriesData });
 
-  const categoriesMap = categoriesDB.reduce((map, category) => {
-    map[category.name.toLowerCase()] = category.id;
-    return map;
-  }, {} as Record<string, string>);
+	const categoriesDB = await prisma.category.findMany();
 
-  products.forEach(async (product) => {
-    const { type, images, ...productData } = product;
+	const categoriesMap = categoriesDB.reduce((map, category) => {
+		map[category.name.toLowerCase()] = category.id;
+		return map;
+	}, {} as Record<string, string>);
 
-    const productDB = await prisma.product.create({
-      data: {
-        ...productData,
-        categoryId: categoriesMap[type],
-      },
-    });
+	products.forEach(async (product) => {
+		const { type, images, ...productData } = product;
 
-    const imagesData = images.map((image) => ({
-      productId: productDB.id,
-      url: image,
-    }));
+		const productDB = await prisma.product.create({
+			data: {
+				...productData,
+				categoryId: categoriesMap[type],
+			},
+		});
 
-    await prisma.productImage.createMany({ data: imagesData });
-  });
-  console.log("Finished seeding database.");
+		const imagesData = images.map((image) => ({
+			productId: productDB.id,
+			url: image,
+		}));
+
+		await prisma.productImage.createMany({ data: imagesData });
+	});
+	console.log("Finished seeding database.");
 }
 
 (() => {
-  if (process.env.NODE_ENV === "production") return;
-  main();
+	if (process.env.NODE_ENV === "production") return;
+	main();
 })();
