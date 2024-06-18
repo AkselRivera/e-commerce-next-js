@@ -1,5 +1,5 @@
 "use client";
-import { Country } from "@/interfaces";
+import { Address, Country } from "@/interfaces";
 import clsx from "clsx";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -17,14 +17,18 @@ type InputForms = {
 
 interface Props {
 	countries: Country[];
+	userStoredAddress?: Partial<Address>;
 }
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isValid },
 	} = useForm<InputForms>({
-		defaultValues: {},
+		defaultValues: {
+			...userStoredAddress,
+			rememberAddress: true,
+		},
 	});
 
 	const onSubmit: SubmitHandler<InputForms> = (data: InputForms) => {};
