@@ -1,6 +1,10 @@
 "use client";
+import { deleteUserAddress, setUserAddress } from "@/actions";
 import { Country } from "@/interfaces";
+import { useAddressStore } from "@/store";
 import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type InputForms = {
@@ -22,12 +26,33 @@ export const AddressForm = ({ countries }: Props) => {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors, isValid },
 	} = useForm<InputForms>({
 		defaultValues: {},
 	});
 
-	const onSubmit: SubmitHandler<InputForms> = (data: InputForms) => {};
+	const { data: session } = useSession({
+		required: true,
+	});
+	const setAddress = useAddressStore((state) => state.setAddress);
+	const storedAddress = useAddressStore((state) => state.address);
+
+	useEffect(() => {
+		if (storedAddress.firstName) {
+			reset(storedAddress);
+		}
+	}, [storedAddress, reset]);
+
+	const onSubmit: SubmitHandler<InputForms> = async (data: InputForms) => {
+		setAddress(data);
+
+		const { rememberAddress, ...rest } = data;
+
+		if (rememberAddress) {
+			await setUserAddress(rest, session!.user.id);
+		} else await deleteUserAddress(session!.user.id);
+	};
 
 	return (
 		<form
@@ -92,11 +117,11 @@ export const AddressForm = ({ countries }: Props) => {
 				<span>País</span>
 				<select
 					className="p-2 border rounded-md bg-gray-200"
-					{...register("address", { required: true })}
+					{...register("country", { required: true })}
 				>
 					<option value="">[ Seleccione ]</option>
 					{countries.map((country) => (
-						<option key={country.id} value={country.name}>
+						<option key={country.id} value={country.id}>
 							{country.name}
 						</option>
 					))}
@@ -122,7 +147,6 @@ export const AddressForm = ({ countries }: Props) => {
 							type="checkbox"
 							className="border-gray-500 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:bg-blue-500 checked:before:bg-blue-500 hover:before:opacity-10"
 							id="checkbox"
-							checked
 							{...register("rememberAddress")}
 						/>
 						<div className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
