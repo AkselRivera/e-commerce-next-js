@@ -24,3 +24,5 @@ export * from "./new-account/ui/NewAccountForm";
 export * from "./provider/AuthProvider";
 
 export * from "./checkout/address/AddressForm";
+export * from "./checkout/checkout/CheckoutProducts";
+export * from "./checkout/checkout/PlaceOrder";

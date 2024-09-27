@@ -24,19 +24,25 @@ export const OrderSummary = () => {
 			<div className="grid grid-cols-2">
 				<span>No. Productos</span>
 				<span className="text-right">
-					{items} {items > 1 ? `articulos` : `articulo`}
+					{items} {items === 1 ? `articulo` : `articulos`}
 				</span>
 				<span>Subtotal: </span>
-				<span className="text-right">$ {currencyFormat(subTotal)}</span>
+				<span className="text-right">{currencyFormat(subTotal)}</span>
 				<span>Impuestos (15%): </span>
-				<span className="text-right">$ {currencyFormat(tax)}</span>
+				<span className="text-right">{currencyFormat(tax)}</span>
 				<span className="mt-5 text-2xl">Total: </span>
-				<span className="text-right mt-5 text-2xl">$ {currencyFormat(total)}</span>
+				<span className="text-right mt-5 text-2xl">{currencyFormat(total)}</span>
 			</div>
 			<div className="mt-5 mb-2 w-full">
-				<Link href="/checkout/address" className="btn-primary flex justify-center">
-					Continuar con el pago
-				</Link>
+				{items === 0 ? (
+					<Link href="/" className="btn-primary flex justify-center">
+						Seguir comprando
+					</Link>
+				) : (
+					<Link href="/checkout/address" className="btn-primary flex justify-center">
+						Continuar con el pago
+					</Link>
+				)}
 			</div>
 		</div>
 	);

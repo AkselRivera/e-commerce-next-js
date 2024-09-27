@@ -5,11 +5,10 @@ import { useCartStore } from "@/store";
 import { QuantitySelector } from "../product/quantity-selector/QuantitySelector";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CartProduct } from "@/interfaces";
 
 export const ProductsInCart = () => {
-	const updateProductQuantity = useCartStore(
-		(state) => state.updateProductQuantity
+	const { updateProductQuantity, removeProductFromCart } = useCartStore(
+		(state) => state
 	);
 	const productsInCart = useCartStore((state) => state.cart);
 
@@ -50,7 +49,10 @@ export const ProductsInCart = () => {
 							quantity={product.quantity}
 							onQuantityChange={(quantity) => updateProductQuantity(product, quantity)}
 						/>
-						<button className="text-red-500 text-sm my-4 hover:underline underline-offset-2">
+						<button
+							className="text-red-500 text-sm my-4 hover:underline underline-offset-2"
+							onClick={() => removeProductFromCart(product)}
+						>
 							Remover
 						</button>
 					</div>
